@@ -39,13 +39,13 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = GameState.ENDED
                 elif event.key == pygame.K_w:  # up
-                    self.player.update_position(0, -1)
+                    self.move_unit(self.player, [0, -1])
                 elif event.key == pygame.K_s:  # down
-                    self.player.update_position(0, 1)
+                    self.move_unit(self.player, [0, 1])
                 elif event.key == pygame.K_d:  # right
-                    self.player.update_position(1, 0)
+                    self.move_unit(self.player, [1, 0])
                 elif event.key == pygame.K_a:  # left
-                    self.player.update_position(-1, 0)
+                    self.move_unit(self.player, [-1, 0])
 
     def load_map(self, file_name):
         with open("maps/" + file_name + ".txt") as map_file:
@@ -69,6 +69,20 @@ class Game:
 
             y_pos = y_pos + 1
 
+    def move_unit(self, unit, position_change):
+        new_position = unit.position [0] + position_change[0], unit.position[1] + position_change[1]
+
+        if new_position[0] < 0 or new_position[0] > (len(self.map[0]) - 1):
+            return
+
+        if new_position[1] < 0 or new_position[1] > (len(self.map) - 1):
+            return
+
+        if self.map[new_position[1]] [new_position[0]] == "W":
+            return
+
+
+        unit.update_position(new_position)
 
 map_tile_image = {
     "G": pygame.transform.scale(pygame.image.load("images/grass.png"), (config.SCALE, config.SCALE)),
